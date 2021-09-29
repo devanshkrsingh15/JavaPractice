@@ -1,0 +1,67 @@
+package problems;
+import java.util.*;
+
+public class BITS {
+	public static long nCr(long n,long r){
+		if(r>n) return 0;
+		if(r==n || r==0)  return (long)1;
+        long n_fact=fact(n);
+        long r_fact=fact(r);
+        long nmr_fact=fact(n-r);
+        
+        return n_fact / (r_fact*nmr_fact) ;
+    }
+    
+    public static  long fact(long n){
+        if(n<=1) return (long)1;
+        return n*fact(n-1);
+    }
+
+    public static long count(long n)
+    {
+        // Code Here
+        int set_bit=countSetBits(n);
+        return helper(n,63,set_bit);
+        
+    }
+    
+    public static long helper(long n,int pos,int sb){
+        if(pos==0 || pos==sb){
+            return 0;
+        }
+        
+        long mask= ((long)1 <<  pos) ;
+        
+        long rsb= n&mask;
+        
+        if(rsb==0) {
+        	return helper(n,pos-1,sb);
+        }
+        long zero=nCr(pos,sb);
+        long one=helper(n,pos-1,sb-1);
+        
+        return zero+one;
+    }
+    
+    public static int countSetBits(long n){
+        int count=0;
+        
+        while(n!=0){
+            n-=(n&(-n));
+            count++;
+        }
+        
+        return count;
+    }
+	
+	
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		long a=8;
+		
+		System.out.println(count(8));
+
+	}
+
+}
